@@ -1,0 +1,56 @@
+{
+  "judul_rapat": "Migrasion CDN ke BytePlus dan Konfigurasi",
+  "tanggal": "",
+  "pemimpin_rapat": "",
+  "daftar_hadir": [
+    "Pak Melvin",
+    "Pak Barah",
+    "Mas Naldy",
+    "Mas Bondan",
+    "Mas Basak"
+  ],
+  "agenda": [
+    {
+      "poin_agenda": "Migrasion CDN dari Cloudflare ke BytePlus",
+      "pembahasan": "Saat ini menggunakan Cloudflare sebagai CDN yang sudah terlalu besar. Terdapat keputusan untuk migrasi ke BytePlus CDN. 5 hari yang lalu diminta akun POC ke Mbak Tasha untuk menguji BytePlus sebelum migrasi. Akan tetapi perlu melakukan uji lagi untuk memastikan fitur dan properti, serta mengidentifikasi masalah saat migrasi dan perilaku saat digunakan. Asset berupa image dan video yang menjadi 60-70% penggunaan CDN akan menjadi yang pertama dipindahkan ke BytePlus. Tes saat ini hanya pada level CDN dan hanya melibatkan domain image. Origin bisa berupa ELB atau S3.",
+      "keputusan": "Akan melakukan migrasi CDN ke BytePlus dengan asset image dan video sebagai yang pertama dipindahkan.",
+      "tindak_lanjut": []
+    },
+    {
+      "poin_agenda": "Perbedaan Ukuran Asset dan Kompensasi",
+      "pembahasan": "Terdapat perbedaan ukuran sekitar 8% - 10% antara Cloudflare dan BytePlus akibat compress dan polish. BytePlus sedang mengembangkan fitur polish yang saat ini belum siap. Sebagai kompen, akan diberikan kupon sebesar 10% dari penggunaan CDN setiap bulan sampai fitur polish siap.",
+      "keputusan": "BytePlus akan memberikan kupon sebesar 10% dari penggunaan CDN setiap bulan sampai fitur polish siap untuk digunakan. Penggunaan kupon akan dihitung berdasarkan kontrak BytePlus.",
+      "tindak_lanjut": []
+    },
+    {
+      "poin_agenda": "Konfigurasi BytePlus CDN",
+      "pembahasan": "Diskusi tentang konfigurasi CDN BytePlus seperti file compression, content type, caching rules. Diperlukan penambahan content type yang benar untuk JPEG dan penghapusan yang tidak relevan. Untuk caching, dapat menambahkan cache rules berdasarkan path extension dan mengatur cache TTL. Fitur always cache hanya diaktifkan untuk konten yang tidak akan berubah.",
+      "keputusan": "Akan dilakukan perubahan konfigurasi CDN BytePlus seperti menambahkan content type yang benar, menghapus konfigurasi yang tidak relevan, dan mengatur caching rules dengan cache TTL sesuai kebutuhan.",
+      "tindak_lanjut": [
+        {
+          "deskripsi": "Tambahkan content type yang benar untuk JPEG dan hapus yang tidak relevan",
+          "penanggung_jawab": "Tim yang bertanggung jawab atas konfigurasi CDN",
+          "tenggat_waktu": ""
+        },
+        {
+          "deskripsi": "Atur caching rules berdasarkan path extension dan tentukan cache TTL",
+          "penanggung_jawab": "Tim yang bertanggung jawab atas konfigurasi CDN",
+          "tenggat_waktu": ""
+        }
+      ]
+    },
+    {
+      "poin_agenda": "Komunikasi dan Follow-up",
+      "pembahasan": "Setiap masalah atau kebutuhan diskusi akan dibicarakan di grup WhatsApp. Pak Barah perlu menjelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan.",
+      "keputusan": "Komunikasi lebih lanjut akan dilakukan di grup WhatsApp. Pak Barah akan menjelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan.",
+      "tindak_lanjut": [
+        {
+          "deskripsi": "Jelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan",
+          "penanggung_jawab": "Pak Barah",
+          "tenggat_waktu": ""
+        }
+      ]
+    }
+  ],
+  "kesimpulan": "Rapat membahas migrasi CDN dari Cloudflare ke BytePlus, perbedaan ukuran asset dan kompen yang diberikan oleh BytePlus, konfigurasi CDN BytePlus, serta strategi komunikasi dan follow-up. Terdapat beberapa tindak lanjut yang perlu dilakukan seperti perubahan konfigurasi CDN dan komunikasi ke BOD dan tim keuangan."
+}

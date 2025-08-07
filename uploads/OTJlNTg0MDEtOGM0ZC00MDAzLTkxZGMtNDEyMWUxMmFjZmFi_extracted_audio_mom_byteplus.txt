@@ -1,0 +1,32 @@
+==================================================
+MINUTES OF MEETING (MoM)
+==================================================
+Judul Rapat     : Migrasion CDN ke BytePlus dan Konfigurasi
+Tanggal         : 
+Pemimpin Rapat  : 
+Daftar Hadir    : Pak Melvin, Pak Barah, Mas Naldy, Mas Bondan, Mas Basak
+------------------------------
+Agenda dan Pembahasan:
+  1. Migrasion CDN dari Cloudflare ke BytePlus
+     Pembahasan  : Saat ini menggunakan Cloudflare sebagai CDN yang sudah terlalu besar. Terdapat keputusan untuk migrasi ke BytePlus CDN. 5 hari yang lalu diminta akun POC ke Mbak Tasha untuk menguji BytePlus sebelum migrasi. Akan tetapi perlu melakukan uji lagi untuk memastikan fitur dan properti, serta mengidentifikasi masalah saat migrasi dan perilaku saat digunakan. Asset berupa image dan video yang menjadi 60-70% penggunaan CDN akan menjadi yang pertama dipindahkan ke BytePlus. Tes saat ini hanya pada level CDN dan hanya melibatkan domain image. Origin bisa berupa ELB atau S3.
+     Keputusan   : Akan melakukan migrasi CDN ke BytePlus dengan asset image dan video sebagai yang pertama dipindahkan.
+  2. Perbedaan Ukuran Asset dan Kompensasi
+     Pembahasan  : Terdapat perbedaan ukuran sekitar 8% - 10% antara Cloudflare dan BytePlus akibat compress dan polish. BytePlus sedang mengembangkan fitur polish yang saat ini belum siap. Sebagai kompen, akan diberikan kupon sebesar 10% dari penggunaan CDN setiap bulan sampai fitur polish siap.
+     Keputusan   : BytePlus akan memberikan kupon sebesar 10% dari penggunaan CDN setiap bulan sampai fitur polish siap untuk digunakan. Penggunaan kupon akan dihitung berdasarkan kontrak BytePlus.
+  3. Konfigurasi BytePlus CDN
+     Pembahasan  : Diskusi tentang konfigurasi CDN BytePlus seperti file compression, content type, caching rules. Diperlukan penambahan content type yang benar untuk JPEG dan penghapusan yang tidak relevan. Untuk caching, dapat menambahkan cache rules berdasarkan path extension dan mengatur cache TTL. Fitur always cache hanya diaktifkan untuk konten yang tidak akan berubah.
+     Keputusan   : Akan dilakukan perubahan konfigurasi CDN BytePlus seperti menambahkan content type yang benar, menghapus konfigurasi yang tidak relevan, dan mengatur caching rules dengan cache TTL sesuai kebutuhan.
+     Tindak Lanjut:
+       1. Tambahkan content type yang benar untuk JPEG dan hapus yang tidak relevan
+          Penanggung Jawab: Tim yang bertanggung jawab atas konfigurasi CDN
+       2. Atur caching rules berdasarkan path extension dan tentukan cache TTL
+          Penanggung Jawab: Tim yang bertanggung jawab atas konfigurasi CDN
+  4. Komunikasi dan Follow-up
+     Pembahasan  : Setiap masalah atau kebutuhan diskusi akan dibicarakan di grup WhatsApp. Pak Barah perlu menjelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan.
+     Keputusan   : Komunikasi lebih lanjut akan dilakukan di grup WhatsApp. Pak Barah akan menjelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan.
+     Tindak Lanjut:
+       1. Jelaskan situasi migrasi dan kompen kupon ke BOD dan tim keuangan
+          Penanggung Jawab: Pak Barah
+------------------------------
+Kesimpulan: Rapat membahas migrasi CDN dari Cloudflare ke BytePlus, perbedaan ukuran asset dan kompen yang diberikan oleh BytePlus, konfigurasi CDN BytePlus, serta strategi komunikasi dan follow-up. Terdapat beberapa tindak lanjut yang perlu dilakukan seperti perubahan konfigurasi CDN dan komunikasi ke BOD dan tim keuangan.
+==================================================

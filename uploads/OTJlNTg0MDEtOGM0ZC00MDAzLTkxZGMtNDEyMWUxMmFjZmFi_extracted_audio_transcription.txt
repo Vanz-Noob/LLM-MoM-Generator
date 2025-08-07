@@ -1,0 +1,538 @@
+[0.00 - 13.00] Sekarang kita menggunakan Cloudflare ya, as our CDN, which is too big sekarang,
+[13.00 - 19.00] so we decide to migrate pakai si byte plus CDN.
+[19.00 - 37.00] Dan 5 days ago saya minta ke Mbak Tasha, minta untuk akun POC,
+[37.00 - 47.00] karena we need to try the CDN on byte plus to make sure migrasi nanti in case kita udah decide.
+[47.00 - 53.00] Sebenarnya kita udah decide sih, kita udah decide bakal pakai byte plus gitu kan.
+[53.00 - 61.00] Tapi kan kita perlu tahu apa ya, perlu kita tes lagi, kita perlu coba lagi lah gitu kan,
+[61.00 - 65.00] fit and property-nya gitu kan. Ada issue nggak ketika migration,
+[65.00 - 72.00] terus ketika dipakai bagaimana behavior-nya gitu kan, fitur-fiturnya yang ada seperti apa gitu kan,
+[72.00 - 80.00] kencingnya bagaimana gitu-gitu, karena yang di Cloudflare kita cukup deep untuk configuration-nya lah gitu kan.
+[80.00 - 92.00] That's why yang pertama kita pindahkan ke byte plus adalah untuk asset yang berupa image dan video,
+[92.00 - 105.00] which is asset image dan video itu sekarang itu mungkin di angka 60-70% penggunaan CDN kita.
+[105.00 - 116.00] Dan kemarin kita udah nyobain. Mungkin sampai di sini ada mau tanggapan dulu nggak, Mas Melvin?
+[117.00 - 126.00] So I try to understand, your background is the testing on POC right now is only on CDN level
+[126.00 - 133.00] and that domain is only image right, no other HTML in that domain right?
+[133.00 - 140.00] And then your origin is ELB, not S3, that's a weird one.
+[140.00 - 146.00] Or it's ultimate, is it S3 or it's just a compute?
+[146.00 - 158.00] Okay, correct. Okay, so we have maybe in the next, maybe we have 3 until 5 endpoint.
+[158.00 - 165.00] Mungkin kayak ada ELB yang di belakangnya itu instance, instance which is the AWS,
+[165.00 - 174.00] terus ada juga yang langsung ke S3, but tapi yang paling gede ya asset-nya bisa dibilang kita punya 2,
+[174.00 - 179.00] image TM dan static TM, itu jalannya di ELB gitu.
+[179.00 - 186.00] Which is running for instance with big disk.
+[187.00 - 196.00] Okay, so right now the testing concern is more about the size right, that's about 8% to 10% difference.
+[196.00 - 205.00] So that's the reason behind that I double check the testing and I found that in Cloudflare,
+[205.00 - 215.00] they basically have a combination of couple of compression, polishing, the compression we comply,
+[215.00 - 218.00] I think the missing part will be the polish.
+[218.00 - 223.00] Okay, correct. We use the polish on the Cloudflare configuration you mean, correct?
+[223.00 - 232.00] Yes, so that's why there's a difference of the 8% to 10%, I calculated that around that, I tested couple image also.
+[232.00 - 238.00] So what I suggest, don't focus on that features for now.
+[239.00 - 246.00] What we can cover with you on that one is that just for the sizing difference of 8% to 10%,
+[246.00 - 251.00] I will use coupon to substitute your money usage.
+[252.00 - 261.00] You got what I mean? Let's say every month you use 80 TB, I will give you 80 TB, 10% of the usage coupon.
+[262.00 - 266.00] Until our polish features ready to be used.
+[268.00 - 274.00] But your polish feature is still in development on the BytePlus, correct?
+[274.00 - 285.00] Yes, yes. We didn't see a substantial request on that one, but it's in the roadmap.
+[286.00 - 293.00] But the BytePlus plan for the polish configuration, it will launch bulan apa?
+[293.00 - 295.00] Not so soon.
+[295.00 - 297.00] Maybe next year?
+[297.00 - 299.00] Maybe next year.
+[299.00 - 310.00] But what I can promise you here, as my level because I promise you here is that we gonna push it to like, if we can bring it earlier, the best,
+[310.00 - 315.00] else what I can promise you is that every month I will pay you the difference of the 10%.
+[316.00 - 327.00] Okay, okay, okay. My control is, okay, for example, we have a contract to use BytePlus CDNs.
+[327.00 - 331.00] Maybe I will calculate it by our using on the contract, correct?
+[332.00 - 336.00] Calculating based on our BytePlus contract 10%.
+[336.00 - 342.00] So that means every month you 80, because I calculated the sizing of the image.
+[342.00 - 350.00] It's about 8 to 10% smaller for all the image.
+[350.00 - 363.00] So the simple one, I can do it in our CDN is like every month, let's say your CDN is 80 TB, I will give you 10% report on that part.
+[364.00 - 366.00] Until our feature is ready.
+[366.00 - 379.00] So if our contract, for example, is 50 TB, so you give me the truth 55 TB per month.
+[379.00 - 380.00] Yes.
+[380.00 - 381.00] Yeah.
+[381.00 - 383.00] Correct. So, okay.
+[383.00 - 391.00] Pak Melvin, my question is, who is guarantee if, for example, kita punya image,
+[391.00 - 398.00] size-nya maybe the origin 5 MB, 5 MB PS, correct?
+[399.00 - 404.00] We use the police and another compression on the corporate.
+[404.00 - 413.00] So in corporate, the image will be compressed like maybe 1 MB, maybe.
+[413.00 - 414.00] 1 MB.
+[414.00 - 415.00] Okay.
+[415.00 - 423.00] So, gimana kita yakin kalau di BytePlus itu after kita implement,
+[423.00 - 428.00] dia akan jadi kayak, mungkin bisa cuma 1.5 MB, bisa jadi,
+[428.00 - 436.00] di BytePlus bisa jadi, let's say, 4 MB, from the origin 5 MB PS.
+[436.00 - 443.00] No, no, no. So, if let's say 5 MB in Cloudflare, you probably can do, let's say, 3 MB.
+[443.00 - 447.00] So, on our end, potentially, it will be 3.3 MB.
+[449.00 - 451.00] This is your guarantee?
+[451.00 - 458.00] Based on the ratio, pro-rated, compression is around that 10 to 15% max.
+[458.00 - 460.00] It won't be that much, right?
+[460.00 - 461.00] Okay.
+[461.00 - 463.00] So, I give you an average of 10%.
+[464.00 - 467.00] Because we see some image is only 8%.
+[468.00 - 469.00] Okay.
+[473.00 - 476.00] Di atas kertas, bener nggak Pak Manfin?
+[476.00 - 479.00] Right, we can do it on paper, don't worry.
+[479.00 - 480.00] We can do it on paper.
+[480.00 - 485.00] On the paper, let's say like that.
+[485.00 - 490.00] Tapi gimana keadanya jika itu berubah gitu?
+[490.00 - 496.00] Not like our thinking right now for the condition in Next.
+[496.00 - 503.00] No, the reality that you can't, you don't want to waste time on going into every single image every day, right?
+[504.00 - 505.00] No point.
+[505.00 - 508.00] Okay, okay. So, gini, gini, gini.
+[509.00 - 523.00] Pak Manfin, I reserve like maybe yesterday I tell to Bak Tasya, we reserve in one month maybe like 70 or 80 terabyte per month.
+[524.00 - 531.00] Itulah berdasarkan, berdasarkan trafik kita di perjalanan, kan?
+[531.00 - 532.00] Ya.
+[532.00 - 541.00] Ya, jadi, maksudku, aku bingung kalau kalkulasi aku salah.
+[542.00 - 545.00] No, you're calculating no wrong.
+[545.00 - 555.00] You just have potentially let's say your diversion based on the domain, let's say right now the same domain you use in Cloudflare is 80 TB.
+[555.00 - 563.00] You potentially come to buy blast, you potentially running at 85, 88 TB maybe.
+[563.00 - 564.00] Maybe.
+[564.00 - 565.00] Yes.
+[565.00 - 569.00] If more than that, it's still in the year guarantee?
+[570.00 - 583.00] No, so we got to be clear, right? So, I give you a reserve of, let's settle down as a reserve of 10 to 15 percent max as the polished differences, right?
+[585.00 - 589.00] Ya, that's a technical justifiable thing, right?
+[589.00 - 595.00] But if let's say that month you run more because of you got event and so on, it's a different story, right?
+[596.00 - 606.00] Okay, but this information is need to know by first finance team or Batasia, I think, or is okay?
+[606.00 - 613.00] No, so basically what I can do is in the contract, I will say that as I write right in the contract, we can write in the contract, right?
+[613.00 - 620.00] So every other comic is 80 TB, but we will give you the 10 percent of every month of the bill.
+[621.00 - 630.00] So, every month let's say you run 85 TB, I will give you 8.5 TB coupon.
+[630.00 - 631.00] Okay.
+[631.00 - 634.00] And you offset your next bill, right?
+[634.00 - 643.00] Okay, I need to clarify with our financial and our BOJ also, right?
+[644.00 - 653.00] But technically you understand, right? Because some image is only 10 percent different, some image is only 8 percent different, some image no different.
+[653.00 - 655.00] Not all the image have this impact.
+[655.00 - 667.00] Okay, okay, maybe I will share my screen, but yesterday we have some configurations.
+[667.00 - 679.00] I think I need to share my screen and to discuss with you and Mastin Aldi what our do configuration on the byte first.
+[679.00 - 689.00] Okay, I mean like I want to make sure this is our configuration is already good or I need to some configurations maybe.
+[689.00 - 692.00] I need your insight for us.
+[692.00 - 698.00] Mas Mastin Aldi, Ijin ini ya, share screen-nya Mas.
+[698.00 - 701.00] Okay.
+[708.00 - 715.00] Okay, tadi siapa yang kontak saya di WA ya? Yang ngasih tau gitu.
+[716.00 - 724.00] With Mastin Aldi, I need to check my WhatsApp chat.
+[724.00 - 729.00] Okay, Mas Mastin Aldi ya.
+[729.00 - 732.00] Ya, betul Pak. Menanggung yang casing ya Pak ya.
+[732.00 - 737.00] Ya, ya, ya. So gini Mas Mastin Aldi, tadi kan katanya di sini ya?
+[738.00 - 742.00] Ya, mungkin izin update Pak Barah.
+[742.00 - 749.00] Jadi yang saya berikan tadi itu adalah dokumentasi yang konsoligasi ternyata.
+[749.00 - 758.00] Tapi tidak apa-apa, kita bisa set up melalui dari si delivery policy-nya Pak.
+[758.00 - 765.00] Nah, kalau di sini nggak ada ini, kan saya lihat nggak ada ya Mas.
+[765.00 - 772.00] Ya, itu karena akun level kita atau maksud saya sih mungkin ya biasa kan gitu.
+[772.00 - 778.00] Akun level kita cuma diinject karena apa gitu, jadi kurang ada, yang harusnya ada menu-nya gitu.
+[778.00 - 783.00] Leveling account lah ya. Atau emang sebenarnya nggak ada? Bukan di sini.
+[783.00 - 790.00] Ya, saya apikan aja Pak. Jadi untuk yang kali ini bukan mengenai dari level account-nya Pak.
+[790.00 - 795.00] Sebenarnya itu karena adanya perubahan dari tampilan konsol Pak.
+[795.00 - 797.00] Oh UI, ya.
+[797.00 - 804.00] Ya, betul. Jadi yang tadinya itu harusnya ada di domain names ini, dia itu berubah menjadi di delivery policy-nya Pak.
+[804.00 - 806.00] Seperti itu.
+[806.00 - 811.00] Mungkin saya akan share kembali yang comment yang relatednya Pak ya.
+[811.00 - 819.00] Ini, oke, ini policy-nya nih, terus kemana kita masukin ya?
+[819.00 - 824.00] Iya, betul. Nah, di sini kita bisa cek di CDN feature Pak.
+[824.00 - 831.00] Nah, kalau di sini kita lihat, pada harusnya itu di caching. Nah, caching rule di file...
+[831.00 - 834.00] Caching rule, no caching rules.
+[834.00 - 838.00] Ya, sorry, caching feature, di bawahnya.
+[840.00 - 842.00] Oke, nah.
+[843.00 - 844.00] Ya.
+[844.00 - 847.00] Lagi, file compression di bawah satu lagi.
+[847.00 - 853.00] Nah, ini. Harusnya, harusnya ada di sini sih Pak, Pak Barah.
+[853.00 - 860.00] Nah, ini mungkin bisa juga Pak Barah untuk dikonservasi dari extension dari image-nya.
+[860.00 - 866.00] Bisa juga dikonservasi dari GPEG-nya itu full caps lock atau memang, seperti apa Pak?
+[868.00 - 870.00] Memang undercase semua?
+[870.00 - 871.00] Ya.
+[871.00 - 872.00] Undercase semua ya Pak ya?
+[872.00 - 873.00] Lowercase dong, ya.
+[873.00 - 874.00] Oh, lowercase ya, sorry.
+[874.00 - 875.00] Hmm.
+[875.00 - 876.00] Oh, oke.
+[876.00 - 881.00] Harusnya dari file compression itu ada kalau kita geser Pak.
+[881.00 - 882.00] Hmm.
+[882.00 - 888.00] Itu kita bisa melihat minimum compression size-nya. Oh, sudah juga ke ini ya, sudah juga di setup ya.
+[888.00 - 892.00] Ya, nah tadi configuring.
+[892.00 - 894.00] Gue ngapain nih?
+[894.00 - 896.00] Nggak ada kayaknya.
+[898.00 - 901.00] Oh, oke. Ini tadi page saya.
+[902.00 - 903.00] Sorry.
+[904.00 - 907.00] Oke, tadi di sini ya, Mas.
+[908.00 - 909.00] Betul.
+[909.00 - 913.00] Nah, kalau di sini mau nge-editnya gimana Mas? Tadi kan saya lewat sini nih.
+[913.00 - 914.00] Hmm.
+[914.00 - 915.00] Which is sama kan harusnya.
+[916.00 - 917.00] Harusnya sama.
+[917.00 - 919.00] Di content optimization.
+[920.00 - 921.00] Ya, di situ bisa.
+[921.00 - 922.00] Di sini?
+[922.00 - 923.00] Bisa.
+[923.00 - 924.00] Dari policy juga tadi yang dari sini.
+[924.00 - 925.00] Betul.
+[925.00 - 927.00] Nah, ini mau nge-editnya gimana? Create version dong.
+[927.00 - 928.00] Create version.
+[928.00 - 929.00] Hmm, bentar.
+[929.00 - 930.00] Kalau, yes.
+[930.00 - 931.00] We create a new version.
+[931.00 - 934.00] So, then you can click modify.
+[934.00 - 935.00] Oh, oke.
+[937.00 - 938.00] Then you can do whatever.
+[938.00 - 939.00] Oh, oke.
+[939.00 - 940.00] Nah.
+[940.00 - 942.00] So, oke, Pak Melvin.
+[942.00 - 943.00] Pak Melvin, ya.
+[944.00 - 960.00] I think me and my team already do some configurations like maybe this is the file compression from before we using Gazeep and now we move to the broadly compression and, ya,
+[961.00 - 968.00] we need to create the content type, we add the content type and this is the extension, right?
+[969.00 - 970.00] Hmm.
+[970.00 - 974.00] Benar ini, Mas, Mas, Mas Naldy.
+[974.00 - 977.00] This is not extension but this is not extension.
+[977.00 - 978.00] This is content type.
+[978.00 - 979.00] Oh, oke.
+[979.00 - 981.00] So, the format shouldn't be JPEG only.
+[981.00 - 986.00] The format should be, you need to have a different way.
+[986.00 - 990.00] Content type for JPEG.
+[992.00 - 994.00] Content type image JPEG.
+[994.00 - 995.00] Image slash JPEG.
+[995.00 - 998.00] Oh, this is, oh, oke.
+[1001.00 - 1002.00] Oke.
+[1003.00 - 1004.00] I will add.
+[1008.00 - 1009.00] Is this correct?
+[1009.00 - 1010.00] Yep, correct.
+[1010.00 - 1012.00] Then you should delete the not relevant one.
+[1012.00 - 1015.00] Oh, oke.
+[1018.00 - 1019.00] Oke.
+[1019.00 - 1021.00] Kalau this is, I,
+[1023.00 - 1025.00] image, this is, will be impact or not?
+[1026.00 - 1031.00] I suggest that you delete that because it will just adding a header or so on,
+[1031.00 - 1033.00] but it shouldn't impact performance.
+[1033.00 - 1035.00] It's very very minor.
+[1035.00 - 1037.00] Oh, oke.
+[1039.00 - 1041.00] Oke.
+[1049.00 - 1050.00] Hmm.
+[1052.00 - 1053.00] Just save.
+[1053.00 - 1057.00] Like, I need to publish or?
+[1058.00 - 1060.00] You need to publish first.
+[1061.00 - 1064.00] Then it will, it will, yes, you gotta put a name.
+[1064.00 - 1068.00] Whatever versioning or address, the date doesn't matter.
+[1068.00 - 1070.00] You click OK.
+[1070.00 - 1074.00] Then it will automatically bind into the configuration of that.
+[1074.00 - 1075.00] Oh, oke.
+[1075.00 - 1077.00] Will be, will be automated.
+[1077.00 - 1081.00] Yes, you go up, you go all the way up, you go all the way up, you click the policy.
+[1081.00 - 1082.00] Hmm.
+[1082.00 - 1085.00] You click on the, yeah, policy ID you click on it.
+[1085.00 - 1088.00] You can see the latest is running.
+[1090.00 - 1096.00] So how you calculate is based on the day and then there's a time formatting that they calculated.
+[1096.00 - 1101.00] So if you want to fall back, you can click the bottom one, then you will fall back.
+[1101.00 - 1102.00] Oke.
+[1102.00 - 1105.00] But, like, oke.
+[1105.00 - 1111.00] But like before, I put the version number is P1.2.
+[1111.00 - 1117.00] The one not show here, the one, the version will show in the history.
+[1117.00 - 1118.00] History?
+[1118.00 - 1120.00] Yeah, you click on the history.
+[1120.00 - 1122.00] On the top, on the top.
+[1123.00 - 1124.00] Oke.
+[1124.00 - 1126.00] Is it this history or the policy history?
+[1126.00 - 1128.00] Description.
+[1128.00 - 1129.00] Description.
+[1129.00 - 1130.00] Oke.
+[1130.00 - 1131.00] Hmm.
+[1131.00 - 1132.00] Okay, correct.
+[1132.00 - 1135.00] So the version P is production.
+[1135.00 - 1140.00] In Q3, we will have one more version, version coming out called S.
+[1140.00 - 1142.00] S dash staging.
+[1143.00 - 1144.00] Oke.
+[1150.00 - 1151.00] Oke.
+[1151.00 - 1152.00] Oke.
+[1152.00 - 1162.00] I need to check maybe in this image, maybe the compressions before not impact, correct?
+[1163.00 - 1164.00] Hmm.
+[1164.00 - 1167.00] Yeah, you can check, but I doubt the polish will.
+[1167.00 - 1170.00] I know about the polish thing long ago.
+[1170.00 - 1171.00] Yeah, yeah.
+[1171.00 - 1174.00] But, oke, I mean this one.
+[1174.00 - 1182.00] But for the previous configuration, I want to put the content type.
+[1182.00 - 1183.00] Hmm.
+[1183.00 - 1186.00] So I need to check.
+[1186.00 - 1190.00] It's still the same for the size, correct?
+[1190.00 - 1192.00] Yeah.
+[1192.00 - 1193.00] Oke.
+[1193.00 - 1194.00] Hmm.
+[1194.00 - 1195.00] Oke.
+[1195.00 - 1197.00] Hmm.
+[1199.00 - 1200.00] Size same, same.
+[1200.00 - 1201.00] Yeah, yeah.
+[1201.00 - 1203.00] Size, the size still same.
+[1206.00 - 1207.00] Oke.
+[1207.00 - 1209.00] Hmm.
+[1209.00 - 1211.00] Mas, siapa? Mas Naldy.
+[1213.00 - 1215.00] Catching, ini gimana, Mas?
+[1215.00 - 1216.00] Catching, catching.
+[1216.00 - 1217.00] Hmm.
+[1217.00 - 1218.00] For catching.
+[1218.00 - 1219.00] You go to.
+[1219.00 - 1221.00] Catching, like the.
+[1221.00 - 1222.00] Yeah, same.
+[1222.00 - 1225.00] You go to create a draft version.
+[1225.00 - 1227.00] The 8th, 8th of the case.
+[1229.00 - 1230.00] Yeah.
+[1230.00 - 1231.00] Going to here?
+[1231.00 - 1232.00] Going to this one?
+[1232.00 - 1233.00] Yeah.
+[1233.00 - 1235.00] You can click modify setting on the right hand side.
+[1235.00 - 1236.00] Oke, sorry, sorry.
+[1242.00 - 1244.00] Because you only have one domain, right?
+[1244.00 - 1245.00] You can, yeah, just click that.
+[1245.00 - 1247.00] And then go to catching.
+[1247.00 - 1248.00] And then you.
+[1248.00 - 1249.00] Yep.
+[1249.00 - 1251.00] You see the cache rules, right?
+[1251.00 - 1252.00] Cache rules.
+[1252.00 - 1254.00] Cache rule, cache rule, which.
+[1254.00 - 1255.00] Which one?
+[1255.00 - 1257.00] Yeah, the second one, cache rules.
+[1257.00 - 1258.00] Okay, okay.
+[1258.00 - 1262.00] Okay, so by default you can add your cache rules.
+[1262.00 - 1265.00] You can use path extension.
+[1265.00 - 1267.00] Ignore case.
+[1267.00 - 1268.00] Yeah.
+[1268.00 - 1271.00] You check the ignore case.
+[1271.00 - 1272.00] Ignore case.
+[1272.00 - 1276.00] And then you can copy paste a bunch of pattern inside there.
+[1277.00 - 1281.00] Okay, like, can I put the content type in here?
+[1282.00 - 1285.00] I can give you, yeah, you can put as much as you want.
+[1285.00 - 1286.00] Okay, let's see.
+[1286.00 - 1288.00] Let's see whether I got a format that can give you.
+[1288.00 - 1289.00] Ha ha ha.
+[1290.00 - 1292.00] You can put in as many as you want.
+[1292.00 - 1294.00] Yeah, it's a comma.
+[1294.00 - 1299.00] Yeah, JPEG, PNG, all the pattern that you need to cache, you can cache.
+[1299.00 - 1300.00] Yep.
+[1303.00 - 1304.00] Like this one?
+[1304.00 - 1305.00] Yes, correct.
+[1305.00 - 1307.00] And then you put the.
+[1307.00 - 1308.00] This is correct.
+[1308.00 - 1310.00] Uh, you have back extension.
+[1310.00 - 1311.00] Yes, correct.
+[1311.00 - 1312.00] Extension.
+[1312.00 - 1321.00] So what you mean over here is that it will cache any, regardless of the URL file, it will cache any object that have this extension.
+[1321.00 - 1322.00] Yeah.
+[1322.00 - 1323.00] Right?
+[1323.00 - 1324.00] Yeah.
+[1326.00 - 1328.00] And you put in cache TTL.
+[1328.00 - 1331.00] Usually, uh, depend on how complex you design.
+[1331.00 - 1334.00] If you're based on cloudflare style.
+[1334.00 - 1336.00] It will be default to two hours.
+[1337.00 - 1338.00] Ini satunya apa ya?
+[1338.00 - 1340.00] Uh, minutes, minutes.
+[1340.00 - 1341.00] Setik or babara.
+[1341.00 - 1343.00] Belakang ada, belakang ada second tu.
+[1343.00 - 1344.00] Oh, okay.
+[1344.00 - 1347.00] Belakang drop down boleh lagi minute, hour, day.
+[1347.00 - 1352.00] So based on cloudflare config default config most of the time two hours.
+[1352.00 - 1353.00] Okay.
+[1353.00 - 1355.00] You can, you can depend on your content design.
+[1355.00 - 1357.00] Some content you can go 365.
+[1357.00 - 1361.00] What the difference always cache if I enable this button?
+[1361.00 - 1365.00] If you enable this button, it will ignore whatever from your origin.
+[1365.00 - 1367.00] If any changes in the origin.
+[1368.00 - 1369.00] Yeah.
+[1369.00 - 1375.00] So I will suggest, uh, if you are very clear, this content that is always cache, then you turn on.
+[1375.00 - 1377.00] Else just put a default rules.
+[1377.00 - 1378.00] Don't turn on this guy.
+[1378.00 - 1379.00] Uh huh.
+[1379.00 - 1381.00] Uh, this guy is for absolute.
+[1382.00 - 1390.00] For example, if I, if I, uh, uh, enable this button always cache, but the, and I set the TTL.
+[1390.00 - 1393.00] Set the TTL for one days.
+[1393.00 - 1394.00] All right.
+[1394.00 - 1398.00] Maybe on the next day, uh, any changes on the origin.
+[1398.00 - 1400.00] This is will be impact or not.
+[1400.00 - 1405.00] If it will not impact if it cache being overflow.
+[1405.00 - 1409.00] So this is very hard to say yes and no.
+[1409.00 - 1415.00] You see, if this image is still hot in your, in your thing, it was still there.
+[1415.00 - 1416.00] Okay.
+[1416.00 - 1418.00] Better we disable this feature.
+[1418.00 - 1419.00] Yeah.
+[1419.00 - 1420.00] Yeah.
+[1420.00 - 1425.00] This only, these features only enable when you let's say a content that you don't change at all.
+[1428.00 - 1429.00] Okay.
+[1429.00 - 1431.00] For example, this is image.
+[1431.00 - 1433.00] The image will be not changes.
+[1433.00 - 1434.00] Hmm.
+[1434.00 - 1437.00] It's not very, very potential changes.
+[1437.00 - 1438.00] Yeah.
+[1438.00 - 1439.00] Yeah.
+[1439.00 - 1440.00] Got lah company logo.
+[1441.00 - 1442.00] 365 days.
+[1442.00 - 1443.00] Yeah.
+[1443.00 - 1444.00] No change.
+[1445.00 - 1446.00] Okay.
+[1446.00 - 1447.00] This is just for example.
+[1447.00 - 1448.00] Hmm.
+[1448.00 - 1450.00] So, uh, single.
+[1450.00 - 1451.00] Gp.
+[1451.00 - 1452.00] PNG.
+[1452.00 - 1453.00] Gp.
+[1453.00 - 1454.00] PNG.
+[1454.00 - 1458.00] Uh, what else, SAK, Bang Bon?
+[1458.00 - 1462.00] Uh, sorry, uh, I need to discuss.
+[1462.00 - 1466.00] Browser, the browser, the casing browser.
+[1466.00 - 1468.00] Gazing browser.
+[1468.00 - 1469.00] Browser.
+[1479.00 - 1482.00] Yeah.
+[1482.00 - 1483.00] Yeah.
+[1483.00 - 1484.00] Okay.
+[1490.00 - 1493.00] Apa lagi, apa maksudnya, Bang?
+[1493.00 - 1495.00] Tuh, saya mau ditantang.
+[1495.00 - 1496.00] Iya.
+[1496.00 - 1497.00] Ada lagi nggak?
+[1504.00 - 1506.00] Uh, okay.
+[1506.00 - 1509.00] Untuk caching, apa, Pak Melvin?
+[1509.00 - 1512.00] Apa, Pak Melvin?
+[1512.00 - 1516.00] Bagaimana saya bisa mengepun untuk URL yang spesifik?
+[1516.00 - 1520.00] Mengepun untuk URL yang spesifik.
+[1520.00 - 1523.00] Maksudnya, anda ingin mengepun URL yang spesifik?
+[1523.00 - 1527.00] Iya, saya ingin mengepun untuk URL yang spesifik.
+[1527.00 - 1528.00] Oh, mengepun, oke.
+[1528.00 - 1531.00] Yang itu di perjalanan yang berbeda, bukan di dalam konfig.
+[1531.00 - 1534.00] Jadi, konfig ini, anda klik tukar sumit.
+[1534.00 - 1535.00] Uh-huh.
+[1535.00 - 1538.00] Jadi, anda mengatakan anda ingin mengepun, ya?
+[1538.00 - 1539.00] Iya.
+[1539.00 - 1541.00] Ah, itu adalah tukar sumit.
+[1541.00 - 1543.00] Anda pergi ke sisi kiri.
+[1543.00 - 1544.00] Sisi kiri?
+[1544.00 - 1545.00] Sisi kiri.
+[1545.00 - 1548.00] Kiri, tukar sumit.
+[1548.00 - 1549.00] Tukar sumit.
+[1549.00 - 1550.00] Ini, ini, ini.
+[1550.00 - 1551.00] Ya, di bawah.
+[1551.00 - 1552.00] Di bawah, di bawah.
+[1552.00 - 1553.00] Di tukar sumit.
+[1553.00 - 1554.00] Ya.
+[1554.00 - 1555.00] Oh, oke.
+[1555.00 - 1557.00] Tukar sumit dan pre-fresh.
+[1561.00 - 1562.00] Hmm.
+[1562.00 - 1563.00] Oh.
+[1564.00 - 1567.00] Ini untuk clear cache di CDN.
+[1567.00 - 1571.00] Yang tab kedua itu untuk warm up.
+[1573.00 - 1574.00] Oke, oke, oke.
+[1576.00 - 1577.00] Oke.
+[1579.00 - 1581.00] Oke, oke, oke.
+[1583.00 - 1584.00] Oke.
+[1584.00 - 1586.00] Ya, Pak Melvin, saya rasa...
+[1587.00 - 1588.00] Ya...
+[1589.00 - 1590.00] Cukup ya.
+[1590.00 - 1593.00] Mas Naldy, tadi saya emang mau nanya ini, kan.
+[1593.00 - 1595.00] Ternyata emang...
+[1595.00 - 1599.00] Limitasi byte-plus dan masih dalam pengembangan, kan.
+[1599.00 - 1602.00] Jadi, jadi kan udah tahu nih, gitu kan.
+[1604.00 - 1607.00] Karena kenapa tadi saya penting nanya ini itu adalah...
+[1608.00 - 1610.00] Pasti saya kalkulesinya salah, gitu kan.
+[1610.00 - 1614.00] Saya mintanya, misalnya 80 tera, ternyata 100 tera, misalnya.
+[1614.00 - 1615.00] Gitu kan.
+[1615.00 - 1618.00] Ternyata karena, ya itu, perbedaan size,
+[1618.00 - 1621.00] compression di coreware dan di sini.
+[1621.00 - 1623.00] Saya mau make sure itu aja sih tadi.
+[1625.00 - 1628.00] Pak Barah, tapi tadi juga udah di-confirm ya, Pak Melvin.
+[1628.00 - 1632.00] Kalau misalnya untuk yang selisih 10% sampai 15% akan...
+[1633.00 - 1635.00] Tercover oleh voucher.
+[1635.00 - 1637.00] Seperti itu ya, Pak Barah, ya.
+[1637.00 - 1638.00] Iya, iya, iya.
+[1638.00 - 1640.00] Oke, siap.
+[1641.00 - 1642.00] Iya, iya, iya.
+[1642.00 - 1643.00] Soalnya...
+[1644.00 - 1645.00] Apa ya?
+[1645.00 - 1648.00] Saya perlu menjelaskan lagi kan nanti ke BOD.
+[1651.00 - 1655.00] Sebelum nanti full kita akan...
+[1655.00 - 1661.00] Misalnya in case kita full migrate dari coreware semua ke sini, gitu kan.
+[1662.00 - 1664.00] Siap, Pak Barah.
+[1664.00 - 1665.00] Dan, iya, iya.
+[1665.00 - 1669.00] Maksudnya ini untuk kita juga untuk make sure...
+[1669.00 - 1675.00] Biar bahwa apa yang ada konfigurasi kita di coreware...
+[1675.00 - 1678.00] Bisa berjalan di byte plus.
+[1678.00 - 1682.00] Tadikan ada perbedaan size image.
+[1682.00 - 1684.00] Yang kita tahu kita adalah media.
+[1684.00 - 1690.00] Mas Daniel di tentu tahu media itu mungkin satu page kita aja bisa ada...
+[1690.00 - 1693.00] 3-40 image kali ya.
+[1693.00 - 1695.00] Kalau buka web kita kan gitu.
+[1695.00 - 1698.00] Which is kita banyak-banyak banget image, gitu kan.
+[1698.00 - 1703.00] Nanti takutnya jadi pertanyaan mereka, ini image kita jadi lebih banyak size-nya.
+[1703.00 - 1705.00] Jadi lebih mahal bayar segala macam.
+[1705.00 - 1710.00] That's why I need to make sure sama Mas Rinaldi sama Pak Melvin.
+[1712.00 - 1713.00] Itu sih.
+[1713.00 - 1714.00] Iya, iya, iya.
+[1714.00 - 1718.00] Kan tujuan kita migration tentu...
+[1718.00 - 1722.00] Ini kan, untuk post optimization, gitu kan.
+[1722.00 - 1724.00] Jangan sampai after...
+[1724.00 - 1725.00] Lagi mahal.
+[1725.00 - 1726.00] Iya.
+[1726.00 - 1731.00] Jangan sampai ya kita udah migration ternyata sama aja gitu.
+[1731.00 - 1733.00] Atau malah lebih mahal kan gitu.
+[1733.00 - 1735.00] So I be fair with you.
+[1735.00 - 1736.00] I be fair with you.
+[1736.00 - 1737.00] I know the problem.
+[1737.00 - 1738.00] I solve it with the coupon.
+[1738.00 - 1741.00] You can still commit with the ATTB.
+[1741.00 - 1743.00] As long as you use it.
+[1743.00 - 1746.00] Within ATTB we give you the ATB of coupon.
+[1746.00 - 1752.00] Or if you use AT5 we give you 8.5 on the thing, right?
+[1752.00 - 1754.00] Or 10% on that one.
+[1754.00 - 1757.00] Until we have that features ready.
+[1757.00 - 1758.00] Ya.
+[1758.00 - 1759.00] Ya, oke.
+[1760.00 - 1761.00] Oke, oke, oke.
+[1761.00 - 1765.00] This is commit by us.
+[1765.00 - 1766.00] Product.
+[1766.00 - 1767.00] Product.
+[1767.00 - 1768.00] Ya, product name.
+[1768.00 - 1769.00] Yup.
+[1769.00 - 1770.00] Oke.
+[1772.00 - 1778.00] I think very, very good discussion for today.
+[1778.00 - 1781.00] Pak Melvin dan Mas Rinaldi,
+[1781.00 - 1789.00] if someday we have some trouble or we need to a little bit of discussion,
+[1789.00 - 1794.00] I will tell you, Pak Melvin and Mas Rinaldi on the group WhatsApp Correct.
+[1794.00 - 1798.00] Pak, jangan suruh kan Pak untuk ditanyakan, Pak.
+[1798.00 - 1799.00] Ya, ya, ya.
+[1799.00 - 1801.00] Karena ini hal yang apa ya?
+[1801.00 - 1803.00] To be honest, hal yang baru ya.
+[1803.00 - 1805.00] For me,
+[1805.00 - 1809.00] terkhususnya gitu kan, ini hal yang baru kita takut,
+[1809.00 - 1813.00] itu tadi ternyata emang config kita yang kurang tepat gitu kan.
+[1813.00 - 1817.00] That's why I need to invite you to discussion about this case.
+[1817.00 - 1819.00] No problem, no problem.
+[1819.00 - 1822.00] So I apologize that I didn't reply on time in WhatsApp.
+[1822.00 - 1823.00] Oke, oke.
+[1823.00 - 1824.00] Today fool.
+[1824.00 - 1825.00] Today fool.
+[1825.00 - 1826.00] Ya, ya, ya.
+[1826.00 - 1827.00] Oke.
+[1827.00 - 1828.00] Oke.
+[1828.00 - 1830.00] Oke, correct.
+[1830.00 - 1834.00] Mas Bondan, Mas Basak ada lagi mau ditanyain nggak?
+[1836.00 - 1837.00] Aman sih.
+[1841.00 - 1842.00] Udah ya?
+[1842.00 - 1843.00] Oke ya.
+[1843.00 - 1844.00] Oke, oke.
+[1844.00 - 1845.00] Jadi ya udah.
+[1845.00 - 1854.00] Nanti kalau emang ternyata pas udah kita migrasi dan itu melebihi apa yang kita sebutkan ke tim Bad Buzz,
+[1854.00 - 1861.00] Pak Melvin juga udah sebutin itu emang ya technical issue lah.
+[1861.00 - 1863.00] Tapi itu udah di-submit di coupon kita nanti.
+[1863.00 - 1867.00] Nanti nggak akan ada perubahan harga, correct Pak Melvin?
+[1867.00 - 1868.00] Ya.
+[1868.00 - 1869.00] Ya, ya.
+[1869.00 - 1871.00] Ini yang perlu saya pastikan juga.
+[1871.00 - 1872.00] Harga tak berubah, Pak.
+[1872.00 - 1874.00] Harga tak berubah.
+[1874.00 - 1877.00] Hanya di bulan ada coupon extra aja.
+[1877.00 - 1878.00] Ya, ya, ya.
+[1878.00 - 1886.00] Yang ditakutkan kan misalnya itu, nanti kan we need to create the monthly report gitu kan.
+[1886.00 - 1888.00] Kita 80 terah resolve.
+[1888.00 - 1891.00] Ternyata 88 terah gitu kan.
+[1891.00 - 1897.00] Ini 88 terahnya nanti takutnya jadi pertanyaan untuk orang Fin financial gitu.
+[1897.00 - 1899.00] Orang kebihar keces atau gimana gitu-gitu sih.
+[1900.00 - 1901.00] Ya, ya.
+[1901.00 - 1904.00] I need to clarify also with them.
+[1907.00 - 1908.00] Yep, Ken.
+[1909.00 - 1910.00] Oke.
+[1910.00 - 1911.00] Ya udah.
+[1911.00 - 1916.00] I think thank you Pak Melvin and Mas Rinaldi for the discussions.
+[1916.00 - 1922.00] If any questions maybe in the next I will ask in the WhatsApp group, okay?
+[1922.00 - 1923.00] Ya.
+[1923.00 - 1924.00] Silakan Pak.
+[1924.00 - 1925.00] Ya, ya.
+[1925.00 - 1929.00] Thank you Pak Rinaldi and Pak Melvin for your helping.
+[1929.00 - 1930.00] Thank you.
+[1930.00 - 1933.00] Thank you Mas Rinaldi, Pak Melvin.
+[1933.00 - 1934.00] Thank you.
+[1934.00 - 1935.00] Thank you.

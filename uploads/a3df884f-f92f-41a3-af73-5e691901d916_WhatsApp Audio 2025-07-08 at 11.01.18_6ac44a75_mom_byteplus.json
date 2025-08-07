@@ -1,0 +1,15 @@
+{
+  "judul_rapat": "Tidak Dapat Didentifikasi",
+  "tanggal": "Tidak Dapat Didentifikasi",
+  "pemimpin_rapat": "Tidak Dapat Didentifikasi",
+  "daftar_hadir": [],
+  "agenda": [
+    {
+      "poin_agenda": "Tes speech recognition ASR Alibaba",
+      "pembahasan": "Dilakukan tes 123 terkait speech recognition ASR Alibaba",
+      "keputusan": "Tidak Dapat Didentifikasi",
+      "tindak_lanjut": []
+    }
+  ],
+  "kesimpulan": "Dilakukan tes 123 terkait speech recognition ASR Alibaba, tanpa informasi keputusan atau tindak lanjut yang jelas."
+}

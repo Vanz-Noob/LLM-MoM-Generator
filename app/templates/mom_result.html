@@ -1,0 +1,167 @@
+<!-- app/templates/mom_result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Processing File...</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #progress-container { margin-top: 20px; }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+        .status-message { margin-bottom: 10px; }
+        .result-section { margin-top: 30px; display: none; } /* Sembunyikan awalnya */
+        .download-link { margin-top: 10px; }
+        .error { color: red; background-color: #ffe6e6; padding: 10px; border: 1px solid #ffcccc; margin-top: 20px; }
+        pre { background-color: #f4f4f4; padding: 10px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Processing Your File...</h1>
+    <div id="progress-container">
+        <div class="status-message" id="status-message">Memulai...</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div id="error-container" class="error" style="display: none;"></div>
+
+    <div id="result-section" class="result-section">
+        <h2>Results</h2>
+        
+        <h3>Transcription:</h3>
+        <pre id="transcription-text"></pre>
+        <div class="download-link">
+            <a id="download-transcript" href="#" target="_blank">Download Transcription (.txt)</a>
+        </div>
+
+        <h3>Minutes of Meeting (MoM):</h3>
+        <pre id="mom-text"></pre>
+        <div class="download-link">
+            <a id="download-mom-json" href="#" target="_blank">Download MoM (JSON)</a>
+        </div>
+        <div class="download-link">
+            <a id="download-mom-txt" href="#" target="_blank">Download MoM (TXT)</a>
+        </div>
+    </div>
+
+    <script>
+        const processId = "{{ process_id }}"; // Dapatkan process_id dari Flask
+        const eventSource = new EventSource(`/stream_status/${processId}`);
+
+        const progressBar = document.getElementById('progress-bar');
+        const statusMessage = document.getElementById('status-message');
+        const errorContainer = document.getElementById('error-container');
+        const resultSection = document.getElementById('result-section');
+        const transcriptionText = document.getElementById('transcription-text');
+        const momText = document.getElementById('mom-text');
+        const downloadTranscript = document.getElementById('download-transcript');
+        const downloadMomJson = document.getElementById('download-mom-json');
+        const downloadMomTxt = document.getElementById('download-mom-txt');
+
+        eventSource.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            console.log("Received data:", data); // Untuk debugging
+
+            const progress = data.progress || 0;
+            const message = data.message || 'Processing...';
+            
+            // Update progress bar dan pesan
+            progressBar.style.width = `${progress}%`;
+            statusMessage.textContent = message;
+
+            if (data.status === 'completed') {
+                // Proses selesai, hentikan SSE
+                eventSource.close();
+                statusMessage.textContent = "Proses selesai!";
+                
+                // Tampilkan hasil
+                fetchTranscriptionAndMoM(data);
+                
+            } else if (data.status === 'error') {
+                // Terjadi error, hentikan SSE dan tampilkan pesan
+                eventSource.close();
+                statusMessage.textContent = "Terjadi kesalahan!";
+                errorContainer.textContent = data.message;
+                errorContainer.style.display = 'block';
+                // Sembunyikan progress bar
+                document.getElementById('progress-container').style.display = 'none';
+            }
+            // Jika status 'processing' atau 'started', biarkan progress bar berjalan
+        };
+
+        eventSource.onerror = function(err) {
+            console.error("EventSource failed:", err);
+            statusMessage.textContent = "Koneksi ke server terputus.";
+            eventSource.close();
+        };
+
+        function fetchTranscriptionAndMoM(data) {
+             // Sembunyikan progress bar
+             document.getElementById('progress-container').style.display = 'none';
+             errorContainer.style.display = 'none'; // Sembunyikan error jika ada
+
+             // Tampilkan section hasil
+             resultSection.style.display = 'block';
+
+             // Isi data hasil (kita bisa juga memuat konten file via AJAX jika perlu, tapi untuk simpel, kita asumsi sudah ada di `data`)
+             // Karena file disimpan di server, kita arahkan link download saja.
+             // Untuk menampilkan teks, kita bisa buat endpoint baru atau membaca file via JS (lebih kompleks).
+             // Untuk sekarang, kita cukup tampilkan link download.
+
+             if (data.transcript_file) {
+                 downloadTranscript.href = `/download/${encodeURIComponent(data.transcript_file)}`;
+                 downloadTranscript.style.display = 'inline-block';
+                 // Opsional: Muat dan tampilkan teks transkripsi
+                 fetch(`/download/${encodeURIComponent(data.transcript_file)}`)
+                    .then(response => response.text())
+                    .then(text => {
+                         transcriptionText.textContent = text;
+                    }).catch(err => {
+                         console.error('Gagal memuat transkripsi:', err);
+                         transcriptionText.textContent = 'Gagal memuat teks transkripsi.';
+                    });
+             } else {
+                 downloadTranscript.style.display = 'none';
+                 transcriptionText.textContent = 'File transkripsi tidak ditemukan.';
+             }
+
+             if (data.mom_txt_file) {
+                 downloadMomTxt.href = `/download/${encodeURIComponent(data.mom_txt_file)}`;
+                 downloadMomTxt.style.display = 'inline-block';
+                 // Muat dan tampilkan teks MoM
+                 fetch(`/download/${encodeURIComponent(data.mom_txt_file)}`)
+                    .then(response => response.text())
+                    .then(text => {
+                         momText.textContent = text;
+                    }).catch(err => {
+                         console.error('Gagal memuat MoM TXT:', err);
+                         momText.textContent = 'Gagal memuat teks MoM.';
+                    });
+             } else {
+                 downloadMomTxt.style.display = 'none';
+                 momText.textContent = 'File MoM TXT tidak ditemukan.';
+             }
+
+             if (data.mom_json_file) {
+                 downloadMomJson.href = `/download/${encodeURIComponent(data.mom_json_file)}`;
+                 downloadMomJson.style.display = 'inline-block';
+             } else {
+                 downloadMomJson.style.display = 'none';
+             }
+        }
+    </script>
+</body>
+</html>

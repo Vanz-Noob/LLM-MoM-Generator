@@ -1,0 +1,15 @@
+==================================================
+MINUTES OF MEETING (MoM)
+==================================================
+Judul Rapat     : Tidak dapat ditentukan
+Tanggal         : Tidak disebutkan
+Pemimpin Rapat  : Tidak disebutkan
+Daftar Hadir    : -
+------------------------------
+Agenda dan Pembahasan:
+  1. Tes speech recognition ASR Alibaba
+     Pembahasan  : Melakukan tes 123 untuk speech recognition ASR Alibaba
+     Keputusan   : Tidak ada
+------------------------------
+Kesimpulan: Perlu dilakukan tes 123 sebagai bagian dari penilaian speech recognition ASR Alibaba, tanpa adanya keputusan atau tindak lanjut yang diidentifikasi dari transkripsi.
+==================================================

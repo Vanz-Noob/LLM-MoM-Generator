@@ -1,0 +1,37 @@
+{
+  "judul_rapat": "Diskusi tentang migrasi CDN ke BytePlus dan konfigurasi terkait",
+  "tanggal": "",
+  "pemimpin_rapat": "",
+  "daftar_hadir": [
+    "Pak Melvin",
+    "Pak Barah",
+    "Mas Naldy"
+  ],
+  "agenda": [
+    {
+      "poin_agenda": "Migrasi CDN dari Cloudflare ke BytePlus",
+      "pembahasan": "Tim telah memutuskan untuk migrasi CDN dari Cloudflare ke BytePlus. Sebagai tahap awal, asset berupa image dan video akan dipindahkan terlebih dahulu karena chiếm 60 - 70% penggunaan CDN. Telah diminta akun POC dari Mbak Tasha untuk menguji BytePlus sebelum migrasi penuh. Ada perbedaan ukuran asset sekitar 8 - 10% antara Cloudflare dan BytePlus yang disebabkan oleh fitur polish yang ada di Cloudflare tetapi belum tersedia di BytePlus.",
+      "keputusan": "BytePlus akan memberikan kupon sebesar 10% dari penggunaan CDN setiap bulan untuk menutupi perbedaan ukuran asset sampai fitur polish siap digunakan. Kontrak akan mencatat penawaran ini.",
+      "tindak_lanjut": [
+        {
+          "deskripsi": "Konsolidasi informasi dan klarifikasi dengan tim keuangan dan BOJ tentang penawaran kupon dari BytePlus",
+          "penanggung_jawab": "Pak Barah",
+          "tenggat_waktu": ""
+        }
+      ]
+    },
+    {
+      "poin_agenda": "Konfigurasi BytePlus CDN",
+      "pembahasan": "Diskusi tentang konfigurasi CDN BytePlus seperti file compression, content type, caching rules. Diperjelaskan bagaimana menambahkan dan mengedit konfigurasi seperti menambahkan content type yang benar untuk JPEG, membuat versi baru dari konfigurasi, dan mengatur cache rules. Selain itu, juga dibahas bagaimana menargetkan cache untuk URL tertentu.",
+      "keputusan": "Tidak ada keputusan formal yang diambil, tetapi ada petunjuk teknis tentang bagaimana mengatur konfigurasi CDN BytePlus.",
+      "tindak_lanjut": [
+        {
+          "deskripsi": "Melakukan perubahan konfigurasi CDN BytePlus sesuai dengan petunjuk teknis yang diberikan, seperti mengatur content type dengan benar dan mengatur cache rules",
+          "penanggung_jawab": "Tim yang mengatur konfigurasi CDN (Tidak jelas nama spesifik)",
+          "tenggat_waktu": ""
+        }
+      ]
+    }
+  ],
+  "kesimpulan": "Rapat membahas migrasi CDN dari Cloudflare ke BytePlus, dengan perbedaan ukuran asset menjadi permasalahan utama. BytePlus menawarkan kupon untuk menutupi perbedaan sampai fitur polish siap. Selain itu, dilakukan diskusi mendalam tentang konfigurasi CDN BytePlus untuk memastikan kinerja yang baik. Jika ada masalah atau pertanyaan lebih lanjut, tim akan berkomunikasi melalui grup WhatsApp."
+}

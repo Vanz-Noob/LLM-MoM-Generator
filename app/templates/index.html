@@ -1,0 +1,25 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Audio/Video & Process with Whisper & BytePlus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        /* Gaya untuk form dan elemen lainnya bisa tetap sama */
+    </style>
+</head>
+<body>
+    <h1>Upload Audio or Video File</h1>
+    <!-- Ubah action form ke /process_file -->
+    <form id="upload-form" method="post" enctype="multipart/form-data" action="{{ url_for('main.process_file') }}">
+        <input type="file" name="file" accept="audio/*,video/*" required>
+        <!-- Ubah teks tombol -->
+        <button type="submit">Submit and Process</button>
+    </form>
+    <!-- Tidak perlu spinner di sini lagi -->
+</body>
+</html>
